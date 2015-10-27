@@ -1,29 +1,33 @@
 from app import app, db
 from flask import Flask
-from .models import TenderEntry
+from .models import TenderEntry, Transaction 
+import random
 
 @app.route('/')
 def hello():
 
-	transactionID = 55
+	transaction = Transaction(123, 10, "Sale", None)
+
+	#Add the created entry to the table
+	db.session.add(transaction)
+
+	#transactionID = 55
 	tenderType = "cash"
 	amount = 64.67
 	timestamp = "2/12/2015"
-	
+
 	validTenderTypes = ["cash", "gift", "mastercard", "visa", "discover", "amex", "debit"]
 
 	if tenderType.lower() not in validTenderTypes:
 		return "Invalid tender type"
 
 	#Create an entry in the tenderEntry table
-	tenderEntry = TenderEntry(recordID, transactionID, tenderType, amount, timestamp)
+	tenderEntry = TenderEntry(transaction, tenderType, amount)
 	
 	#Add the created entry to the table
 	db.session.add(tenderEntry)
 
 	#Save the changes in the database
 	db.session.commit()
-
-	a = db.session.query(tenderEntry).filter_by(transactionID = 55).all()
 
 	return str(len(a))
