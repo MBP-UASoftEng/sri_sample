@@ -13,6 +13,8 @@ class TenderEntry(db.Model):
     amount = db.Column(db.Integer)
     timestamp = db.Column(db.String)
 
+    transaction = db.relationship('Transaction', backref='transaction')
+
     def __init__ (self, transactionID, tenderType, amount):
         self.transactionID = transactionID
         self.tenderType = tenderType
@@ -35,7 +37,8 @@ class Transaction(db.Model):
     transaction_type = db.Column(db.String, nullable=False)
     parent_id = db.Column(db.Integer, ForeignKey("Transaction.id"), nullable=True)
     timestamp = db.Column(db.String, nullable=False)
-    tender_entrys = db.relationship('TenderEntry', backref='transaction', lazy='dynamic')
+    
+    parent = db.relationship('Transaction', backref='parent_transaction')
 
     def __init__(self, cashier_id, amount, transaction_type, parent_id):
         self.cashier_id = cashier_id
