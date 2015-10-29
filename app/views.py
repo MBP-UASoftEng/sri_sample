@@ -1,60 +1,22 @@
 from app import app, db
 from flask import Flask
-from .models import Employee
+from .models import TransactionEntry
 import random
 
 @app.route('/')
 def hello():
 
-	first_name1 = "Manager".lower()
-	last_name1 = "Manager".lower()
-	active1 = True;
-	password1 = "harsha1233"
-	classification1 = "manager".lower().replace(" ", "")
-	unique1 = False
-	employee_id1 = None
-	while not unique1:
-		emp_id = random.randint(100000, 999999)
-		exists = Employee.query.filter_by(employee_id = emp_id).all()
-		if len(exists) == 0:
-			unique1 = True
-			employee_id1 = emp_id
+	transaction_id = None
 
-	manager = Employee(first_name = first_name1, last_name = last_name1, active = active1, classification = classification1, password = password1, employee_id = employee_id1, manager = None)
+	product_id = 45
+	price = "%.2f" % random.uniform(0.01, 100.00)
+	quantity = 5
 
-	#Add the created entry to the table
-	db.session.add(manager)
+	#creates an entry in the Transaction Entry table
+	transaction_entry = TransactionEntry(transaction_id = transaction_id, product_id = product_id, price = price, quantity = quantity)
 
-	first_name = "Harsha".lower()
-	last_name = "Bande".lower()
-	active = True
-	password = "harsha123"
+	db.session.add(transaction_entry)
 
-	classifications = ["generalmanager", "shiftmanager", "cashier"]
-
-	classification = "Cashier".lower().replace(" ", "")
-
-	if classification not in classifications:
-		return "Incorrect classification"
-
-	unique = False
-	employee_id = None
-	while not unique:
-		emp_id = random.randint(100000, 999999)
-		exists = Employee.query.filter_by(employee_id = emp_id).all()
-		if len(exists) == 0:
-			unique = True
-			employee_id = emp_id
-
-	#Create a entry in the employee table
-	employee = Employee(first_name = first_name, last_name = last_name, active = active, classification = classification, password = password, employee_id = employee_id, manager = manager.id)
-	
-	#Add the created entry to the table
-	db.session.add(employee)
-
-	#Save the changes in the database
 	db.session.commit()
 
-	a = Employee.query.filter_by(first_name = "harsha").all()
-
-	return str(len(a))
+	return "Entry added to db successfully."
