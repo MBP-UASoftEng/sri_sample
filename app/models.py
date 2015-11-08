@@ -8,13 +8,13 @@ class TenderEntry (db.Model):
     __tablename__ = 'tenderEntry'
 
     id = db.Column(db.Integer, primary_key = True)
-    transaction_id = db.Column(db.Integer, ForeignKey("transaction.id"), index = True, nullable = True)
+    transaction_id = db.Column(db.Integer, ForeignKey("transaction.id"), index = True, nullable = False)
     tenderType = db.Column(db.String)
     amount = db.Column(db.Integer)
     timestamp = db.Column(db.String)
 
-    def __init__ (self, transaction, tenderType, amount):
-        self.transaction_id = transaction
+    def __init__ (self, transactionID, tenderType, amount):
+        self.transaction_id = transactionID
         self.tenderType = tenderType
         self.amount = amount
         self.timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")

@@ -11,6 +11,8 @@ def hello ():
 	#Add the created entry to the table
 	db.session.add(transaction)
 
+	db.session.commit()
+
 	#transactionID = 55
 	tenderType = "cash"
 	amount = 75
@@ -28,6 +30,16 @@ def hello ():
 	
 	#Save the changes in the database
 	db.session.commit()
+
+	print "\n\n\n"
+
+	print "id:", tenderEntry.id
+	print "transaction_id:", tenderEntry.transaction_id
+	print "tenderType:", tenderEntry.tenderType
+	print "amount:", tenderEntry.amount
+	print "timestamp:", tenderEntry.timestamp
+
+	print "\n\n\n"	
 
 	a = TenderEntry.query.filter_by(tenderType = "cash").all()
 
